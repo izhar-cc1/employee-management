@@ -11,12 +11,13 @@ import java.util.*
 @Component
 class JwtTokenUtil {
 
-    private val secret = "your-backend-secret-key" // Use env variable in real app
+    // Read JWT_SECRET from environment variable, fallback to default if missing
+    private val secret: String = System.getenv("JWT_SECRET") ?: "your-backend-secret-key"
     private val algorithm = Algorithm.HMAC256(secret)
 
     fun generateToken(email: String, systemRole: String): String {
         val now = Date()
-        val expiry = Date(now.time + 1000 * 60 * 60 * 2) // 2 hours
+        val expiry = Date(now.time + 1000 * 60 * 60) // 1 hour
 
         return JWT.create()
             .withIssuer("employee-app")

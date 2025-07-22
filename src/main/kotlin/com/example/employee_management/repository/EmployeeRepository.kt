@@ -13,4 +13,14 @@ interface EmployeeRepository : JpaRepository<Employee, Long> {
     fun findByWorkEmailAndActiveTrue(email: String): Employee?
     fun findByWorkEmail(email: String): Employee?
 
+    // New methods for finding approvers
+    fun findByDepartmentAndActiveTrue(department: String): List<Employee>
+
+    fun findBySystemRoleAndActiveTrue(systemRole: String): List<Employee>
+
+    fun findByDepartmentAndSystemRoleAndActiveTrue(
+        department: String,
+        systemRole: String
+    ): List<Employee>
+
 }

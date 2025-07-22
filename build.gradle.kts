@@ -32,6 +32,9 @@ dependencies {
 
 	// ✅ Utils (for reading MS keys)
 	implementation("commons-io:commons-io:2.15.1")
+
+	// ✅ Mail support
+	implementation("org.springframework.boot:spring-boot-starter-mail")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

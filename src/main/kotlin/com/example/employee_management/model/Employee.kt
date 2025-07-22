@@ -105,7 +105,7 @@ data class Employee(
 
     @Column(columnDefinition = "TEXT")
     var attendanceRecord: String? = null,
-    var leaveBalance: Int? = null,
+    var leaveBalance: Int = 20,
     @Column(columnDefinition = "TEXT")
     var leaveHistory: String? = null,
     var shiftTiming: String? = null,
