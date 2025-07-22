@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus
 @RestController
 @RequestMapping("/auth/microsoft")
 @CrossOrigin(
-    origins = ["http://localhost:3000", "https://localhost:3000"],
+    origins = ["http://localhost:5173", "https://localhost:3000"],
     allowedHeaders = ["*"],
     allowCredentials = "true"
 )
