@@ -35,6 +35,8 @@ dependencies {
 
 	// ✅ Mail support
 	implementation("org.springframework.boot:spring-boot-starter-mail")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
