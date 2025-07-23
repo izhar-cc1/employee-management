@@ -14,11 +14,11 @@ import org.springframework.http.HttpStatus
 
 @RestController
 @RequestMapping("/auth/microsoft")
-@CrossOrigin(
-    origins = ["http://localhost:5173", "https://localhost:3000"],
-    allowedHeaders = ["*"],
-    allowCredentials = "true"
-)
+//@CrossOrigin(
+//    origins = ["http://localhost:5173", "https://localhost:3000"],
+//    allowedHeaders = ["*"],
+//    allowCredentials = "true"
+//)
 class AuthController(
     private val tokenValidator: MicrosoftTokenValidator,
     private val employeeService: EmployeeService,

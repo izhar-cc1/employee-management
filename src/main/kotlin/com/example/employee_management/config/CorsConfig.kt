@@ -1,47 +1,17 @@
-// File: CorsConfig.kt
+// File: WebConfig.kt
 package com.example.employee_management.config
 
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-class CorsConfig {
-
-    @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
-        val configuration = CorsConfiguration().apply {
-            // Allow specific origins (replace with your frontend URL)
-            allowedOrigins = listOf(
-                "http://localhost:3000",
-                "https://localhost:3000",
-                "http://localhost:3001",
-                "https://your-frontend-domain.com"
-            )
-
-            // Allow specific methods
-            allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
-
-            // Allow specific headers
-            allowedHeaders = listOf(
-                "Authorization",
-                "Content-Type",
-                "Origin",
-                "Access-Control-Request-Method",
-                "Access-Control-Request-Headers"
-            )
-
-            // Allow credentials
-            allowCredentials = true
-
-            // Expose headers
-            exposedHeaders = listOf("Authorization")
-        }
-
-        return UrlBasedCorsConfigurationSource().apply {
-            registerCorsConfiguration("/**", configuration)
-        }
+class WebConfig : WebMvcConfigurer {
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/**") // Applies to all endpoints
+            .allowedOrigins("http://localhost:5173", "https://localhost:3000") // Frontend origins
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allowed HTTP methods
+            .allowedHeaders("*") // Allow any headers (including Authorization)
+            .allowCredentials(true) // Allow cookies/authorization headers
     }
 }
