@@ -49,39 +49,41 @@ class EmployeeController(
         return ResponseEntity.ok(employeeMapper.toResponseDto(employee))
     }
 
-    @PostMapping("/{id}/photo")
-    fun uploadPhoto(
-        @PathVariable id: Long,
+    // 🔒 Admin only - Upload photo
+    @PostMapping("/{uuid}/photo")
+    fun uploadPhotoByUUID(
+        @PathVariable uuid: UUID,
         @RequestParam("file") file: MultipartFile,
         @RequestHeader("Authorization") authHeader: String
     ): ResponseEntity<String> {
         enforceAdmin(authHeader)
-        val fileName = employeeService.uploadPhoto(id, file)
+        val fileName = employeeService.uploadPhoto(uuid, file)
         return ResponseEntity.ok(fileName)
     }
 
-    @GetMapping("/{id}/photo")
-    fun getPhoto(@PathVariable id: Long): ResponseEntity<ByteArray> {
-        val (bytes, contentType) = employeeService.getPhoto(id)
+    @GetMapping("/{uuid}/photo")
+    fun getPhoto(@PathVariable uuid: UUID): ResponseEntity<ByteArray> {
+        val (bytes, contentType) = employeeService.getPhoto(uuid)
         return ResponseEntity.ok()
             .header("Content-Type", contentType)
             .body(bytes)
     }
 
-    @PostMapping("/{id}/resume")
-    fun uploadResume(
-        @PathVariable id: Long,
+    // 🔒 Admin only - Upload resume
+    @PostMapping("/{uuid}/resume")
+    fun uploadResumeByUUID(
+        @PathVariable uuid: UUID,
         @RequestParam("file") file: MultipartFile,
         @RequestHeader("Authorization") authHeader: String
     ): ResponseEntity<String> {
         enforceAdmin(authHeader)
-        val fileName = employeeService.uploadResume(id, file)
+        val fileName = employeeService.uploadResume(uuid, file)
         return ResponseEntity.ok(fileName)
     }
 
-    @GetMapping("/{id}/resume")
-    fun getResume(@PathVariable id: Long): ResponseEntity<ByteArray> {
-        val (bytes, contentType) = employeeService.getResume(id)
+    @GetMapping("/{uuid}/resume")
+    fun getResume(@PathVariable uuid: UUID): ResponseEntity<ByteArray> {
+        val (bytes, contentType) = employeeService.getResume(uuid)
         return ResponseEntity.ok()
             .header("Content-Type", contentType)
             .header("Content-Disposition", "attachment; filename=resume.pdf")

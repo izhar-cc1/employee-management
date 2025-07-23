@@ -71,8 +71,8 @@ class EmployeeService(
     }
 
     // ✅ Upload profile photo
-    fun uploadPhoto(id: Long, file: MultipartFile): String {
-        val employee = getActiveEmployeeById(id)
+    fun uploadPhoto(uuid: UUID, file: MultipartFile): String {
+        val employee = getActiveEmployeeByEmployeeId(uuid)
         val fileName = "photo_${employee.id}_${file.originalFilename}"
         val filePath = Paths.get("uploads/photos", fileName)
         Files.createDirectories(filePath.parent)
@@ -83,14 +83,14 @@ class EmployeeService(
     }
 
     // ✅ Retrieve profile photo
-    fun getPhoto(id: Long): Pair<ByteArray, String> {
-        val employee = getActiveEmployeeById(id)
+    fun getPhoto(uuid: UUID): Pair<ByteArray, String> {
+        val employee = getActiveEmployeeByEmployeeId(uuid)
         val path = Paths.get(employee.photoPath ?: throw NoSuchElementException("No photo found"))
         return Files.readAllBytes(path) to Files.probeContentType(path)
     }
 
-    fun uploadResume(id: Long, file: MultipartFile): String {
-        val employee = getActiveEmployeeById(id)
+    fun uploadResume(uuid: UUID, file: MultipartFile): String {
+        val employee = getActiveEmployeeByEmployeeId(uuid)
         val fileName = "resume_${employee.id}_${file.originalFilename}"
         val filePath = Paths.get("uploads/resumes", fileName)
         Files.createDirectories(filePath.parent)
@@ -100,8 +100,8 @@ class EmployeeService(
         return fileName
     }
 
-    fun getResume(id: Long): Pair<ByteArray, String> {
-        val employee = getActiveEmployeeById(id)
+    fun getResume(uuid: UUID): Pair<ByteArray, String> {
+        val employee = getActiveEmployeeByEmployeeId(uuid)
         val path = Paths.get(employee.resumePath ?: throw NoSuchElementException("No resume found"))
         return Files.readAllBytes(path) to Files.probeContentType(path)
     }
