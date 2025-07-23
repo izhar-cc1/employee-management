@@ -53,7 +53,8 @@ class EmployeeMapper {
             employeeStatus = employee.employeeStatus,
             workMode = employee.workMode,
             employeeCode = employee.employeeCode,
-            systemRole = employee.systemRole
+            systemRole = employee.systemRole,
+            aadhaarNumber = employee.aadhaarNumber
         )
     }
 }

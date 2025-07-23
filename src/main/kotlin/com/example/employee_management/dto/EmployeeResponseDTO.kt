@@ -22,5 +22,6 @@ data class EmployeeResponseDTO(
     val employeeStatus: EmployeeStatus,
     val workMode: WorkMode,
     val employeeCode: String,
-    val systemRole: String
+    val systemRole: String,
+    val aadhaarNumber: String,
 )

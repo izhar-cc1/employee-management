@@ -91,14 +91,34 @@ class EmployeeService(
 
     fun uploadResume(uuid: UUID, file: MultipartFile): String {
         val employee = getActiveEmployeeByEmployeeId(uuid)
-        val fileName = "resume_${employee.id}_${file.originalFilename}"
+
+        // ✅ Validate content type (MIME)
+        val allowedTypes = listOf("application/pdf")
+        val contentType = file.contentType ?: throw IllegalArgumentException("File type is missing")
+        if (contentType !in allowedTypes) {
+            throw IllegalArgumentException("Only PDF resumes are allowed. Provided: $contentType")
+        }
+
+        // ✅ Get filename and validate extension
+        val originalName = file.originalFilename ?: "resume.pdf"
+        if (!originalName.endsWith(".pdf", ignoreCase = true)) {
+            throw IllegalArgumentException("Resume must be a .pdf file")
+        }
+
+        // ✅ Build file path and save
+        val fileName = "resume_${employee.id}_$originalName"
         val filePath = Paths.get("uploads/resumes", fileName)
         Files.createDirectories(filePath.parent)
         Files.write(filePath, file.bytes)
+
+        // ✅ Update database
         employee.resumePath = filePath.toString()
         employeeRepository.save(employee)
+
         return fileName
     }
+
+
 
     fun getResume(uuid: UUID): Pair<ByteArray, String> {
         val employee = getActiveEmployeeByEmployeeId(uuid)

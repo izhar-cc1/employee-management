@@ -72,7 +72,6 @@ data class Employee(
 
     @Enumerated(EnumType.STRING)
     var workMode: WorkMode,
-
     var officeLocation: String? = null,
 
     @NotBlank
