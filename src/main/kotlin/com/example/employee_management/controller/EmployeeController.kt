@@ -136,6 +136,27 @@ class EmployeeController(
         return ResponseEntity.noContent().build()
     }
 
+    // ✅ Public - Validate token and return employee by work email
+    @GetMapping("/validate-token")
+    fun validateToken(
+        @RequestHeader("Authorization") authHeader: String
+    ): ResponseEntity<EmployeeResponseDTO> {
+        val token = authHeader.removePrefix("Bearer ").trim()
+
+        // Extract email from token
+        val email = try {
+            jwtTokenUtil.extractEmail(token)
+        } catch (ex: Exception) {
+            throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token")
+        }
+
+        // Check if employee exists with this work email and is active
+        val employee = employeeService.getActiveEmployeeByWorkEmail(email)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "No active employee found for email: $email")
+
+        return ResponseEntity.ok(employeeMapper.toResponseDto(employee))
+    }
+
 
     // ✅ Extract Bearer token & check systemRole
     private fun enforceAdmin(authHeader: String) {

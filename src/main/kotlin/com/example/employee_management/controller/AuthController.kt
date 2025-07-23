@@ -14,11 +14,6 @@ import org.springframework.http.HttpStatus
 
 @RestController
 @RequestMapping("/auth/microsoft")
-//@CrossOrigin(
-//    origins = ["http://localhost:5173", "https://localhost:3000"],
-//    allowedHeaders = ["*"],
-//    allowCredentials = "true"
-//)
 class AuthController(
     private val tokenValidator: MicrosoftTokenValidator,
     private val employeeService: EmployeeService,
@@ -44,6 +39,7 @@ class AuthController(
             return ResponseEntity.ok(
                 JwtResponse(
                     token = backendToken,
+                    name = employee.firstName,
                     workEmail = employee.workEmail,
                     systemRole = employee.systemRole
                 )
