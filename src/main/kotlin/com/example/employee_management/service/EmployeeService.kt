@@ -59,7 +59,7 @@ class EmployeeService(
             ?: throw RuntimeException("Active employee not found")
 
         // You can later add mapper logic instead of this direct override
-        val updatedEmployee = updated.copy(id = existing.id, employeeId = existing.employeeId)
+        val updatedEmployee = updated.copy(id = existing.id, employeeId = existing.employeeId, active = existing.active)
         return employeeRepository.save(updatedEmployee)
     }
 

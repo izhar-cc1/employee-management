@@ -43,7 +43,7 @@ class EmployeeController(
     }
 
     // ✅ Public - Get active employee by UUID
-    @GetMapping("/uuid/{uuid}")
+    @GetMapping("/{uuid}")
     fun getByEmployeeId(@PathVariable uuid: UUID): ResponseEntity<EmployeeResponseDTO> {
         val employee = employeeService.getActiveEmployeeByEmployeeId(uuid)
         return ResponseEntity.ok(employeeMapper.toResponseDto(employee))
@@ -128,7 +128,7 @@ class EmployeeController(
 //    }
 
     // 🔒 Admin only - Deactivate by UUID
-    @DeleteMapping("/uuid/{uuid}")
+    @DeleteMapping("/{uuid}")
     fun deactivateEmployeeByUUID(
         @PathVariable uuid: UUID,
         @RequestHeader("Authorization") authHeader: String
