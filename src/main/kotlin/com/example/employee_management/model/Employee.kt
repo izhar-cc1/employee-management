@@ -136,8 +136,12 @@ data class Employee(
     @Column(columnDefinition = "TEXT")
     var remarks: String? = null,
 
-    @NotBlank
-    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Aadhaar number is required")
+    @Pattern(
+        regexp = "^[0-9]{12}$",
+        message = "Aadhaar number must be exactly 12 digits"
+    )
+    @Column(nullable = false, unique = true, length = 12)
     var aadhaarNumber: String,
 
     @Column(nullable = false)
