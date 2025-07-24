@@ -35,12 +35,12 @@ class EmployeeController(
     }
 
 
-    // ✅ Public - Get active employee by database ID
-    @GetMapping("/{uuid}")
-    fun getById(@PathVariable uuid: UUID): ResponseEntity<EmployeeResponseDTO> {
-        val employee = employeeService.getActiveEmployeeById(uuid)
-        return ResponseEntity.ok(employeeMapper.toResponseDto(employee))
-    }
+//    // ✅ Public - Get active employee by database ID
+//    @GetMapping("/{uuid}")
+//    fun getById(@PathVariable uuid: UUID): ResponseEntity<EmployeeResponseDTO> {
+//        val employee = employeeService.getActiveEmployeeById(uuid)
+//        return ResponseEntity.ok(employeeMapper.toResponseDto(employee))
+//    }
 
     // ✅ Public - Get active employee by UUID
     @GetMapping("/{uuid}")
