@@ -17,9 +17,9 @@ class EmployeeService(
 
     fun getAllEmployees(): List<Employee> = employeeRepository.findAll()
 
-    fun getActiveEmployeeById(id: Long): Employee {
-        return employeeRepository.findByIdAndActiveTrue(id)
-            ?: throw RuntimeException("Active employee not found with id $id")
+    fun getActiveEmployeeById(uuid: UUID): Employee {
+        return employeeRepository.findByEmployeeIdAndActiveTrue(uuid)
+            ?: throw RuntimeException("Active employee not found with id $uuid")
     }
 
     fun getActiveEmployeeByEmployeeId(uuid: UUID): Employee {
@@ -54,8 +54,8 @@ class EmployeeService(
     }
 
 
-    fun updateEmployee(id: Long, updated: Employee): Employee {
-        val existing = employeeRepository.findByIdAndActiveTrue(id)
+    fun updateEmployee(uuid: UUID, updated: Employee): Employee {
+        val existing = employeeRepository.findByEmployeeIdAndActiveTrue(uuid)
             ?: throw RuntimeException("Active employee not found")
 
         // You can later add mapper logic instead of this direct override
@@ -126,9 +126,9 @@ class EmployeeService(
         return Files.readAllBytes(path) to Files.probeContentType(path)
     }
 
-    fun deactivateEmployee(id: Long) {
-        val employee = employeeRepository.findById(id)
-            .orElseThrow { RuntimeException("Employee not found with id $id") }
+    fun deactivateEmployeeByUUID(uuid: UUID) {
+        val employee = employeeRepository.findByEmployeeIdAndActiveTrue(uuid)
+            ?: throw RuntimeException("Active employee not found with UUID $uuid")
 
         employee.active = false
         employeeRepository.save(employee)

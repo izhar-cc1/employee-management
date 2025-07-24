@@ -36,9 +36,9 @@ class EmployeeController(
 
 
     // ✅ Public - Get active employee by database ID
-    @GetMapping("/{id}")
-    fun getById(@PathVariable id: Long): ResponseEntity<EmployeeResponseDTO> {
-        val employee = employeeService.getActiveEmployeeById(id)
+    @GetMapping("/{uuid}")
+    fun getById(@PathVariable uuid: UUID): ResponseEntity<EmployeeResponseDTO> {
+        val employee = employeeService.getActiveEmployeeById(uuid)
         return ResponseEntity.ok(employeeMapper.toResponseDto(employee))
     }
 
@@ -104,15 +104,15 @@ class EmployeeController(
     }
 
     // 🔒 Admin only - Update
-    @PutMapping("/{id}")
+    @PutMapping("/{uuid}")
     fun updateEmployee(
-        @PathVariable id: Long,
+        @PathVariable uuid: UUID,
         @RequestBody dto: EmployeeRequestDTO,
         @RequestHeader("Authorization") authHeader: String
     ): ResponseEntity<EmployeeResponseDTO> {
         enforceAdmin(authHeader)
         val employee = employeeMapper.toEntity(dto)
-        val updated = employeeService.updateEmployee(id, employee)
+        val updated = employeeService.updateEmployee(uuid, employee)
         return ResponseEntity.ok(employeeMapper.toResponseDto(updated))
     }
 
@@ -127,14 +127,14 @@ class EmployeeController(
 //        return ResponseEntity.noContent().build()
 //    }
 
-    // 🔒 Admin only - Delete
-    @DeleteMapping("/{id}")
-    fun deactivateEmployee(
-        @PathVariable id: Long,
+    // 🔒 Admin only - Deactivate by UUID
+    @DeleteMapping("/uuid/{uuid}")
+    fun deactivateEmployeeByUUID(
+        @PathVariable uuid: UUID,
         @RequestHeader("Authorization") authHeader: String
     ): ResponseEntity<Void> {
         enforceAdmin(authHeader)
-        employeeService.deactivateEmployee(id)
+        employeeService.deactivateEmployeeByUUID(uuid)
         return ResponseEntity.noContent().build()
     }
 
