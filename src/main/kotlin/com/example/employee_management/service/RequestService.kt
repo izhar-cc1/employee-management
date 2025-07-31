@@ -227,4 +227,11 @@ class RequestService(
             }
         }
     }
+    fun getRequestsByStatus(status: RequestStatus): List<EmployeeRequest> {
+        return requestRepository.findByStatusAndActiveTrue(status)
+    }
+
+    fun getAllRequestsByStatuses(statuses: List<RequestStatus>): List<EmployeeRequest> {
+        return requestRepository.findByStatusInAndActiveTrue(statuses)
+    }
 }

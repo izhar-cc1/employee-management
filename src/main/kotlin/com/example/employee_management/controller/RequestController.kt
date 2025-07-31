@@ -4,6 +4,7 @@ package com.example.employee_management.controller
 import com.example.employee_management.dto.CreateRequestDTO
 import com.example.employee_management.dto.ProcessRequestDTO
 import com.example.employee_management.dto.RequestResponseDTO
+import com.example.employee_management.model.RequestStatus
 import com.example.employee_management.model.RequestType
 import com.example.employee_management.service.EmailNotificationService
 import com.example.employee_management.service.RequestService
@@ -194,6 +195,48 @@ class RequestController(
 
         requestService.deleteRequest(requestId)
         return ResponseEntity.noContent().build()
+    }
+
+    // Get all requests by status (Admin only)
+    @GetMapping("/admin/status/{status}")
+    fun getRequestsByStatus(
+        @PathVariable status: RequestStatus,
+        @RequestHeader("Authorization") authHeader: String
+    ): ResponseEntity<List<RequestResponseDTO>> {
+        val employeeId = extractEmployeeId(authHeader)
+        val employee = employeeService.getActiveEmployeeByEmployeeId(employeeId)
+
+        // Only admins can access this endpoint
+        if (employee.systemRole != "ADMIN") {
+            throw RuntimeException("Access denied. Only admins can view all requests by status.")
+        }
+
+        val requests = requestService.getRequestsByStatus(status)
+        return ResponseEntity.ok(requests.map { toResponseDTO(it) })
+    }
+
+    // Get all requests with multiple statuses (Admin only)
+    @GetMapping("/admin/requests")
+    fun getAllRequestsByStatuses(
+        @RequestParam(required = false) statuses: List<RequestStatus>?,
+        @RequestHeader("Authorization") authHeader: String
+    ): ResponseEntity<List<RequestResponseDTO>> {
+        val employeeId = extractEmployeeId(authHeader)
+        val employee = employeeService.getActiveEmployeeByEmployeeId(employeeId)
+
+        // Only admins can access this endpoint
+        if (employee.systemRole != "ADMIN") {
+            throw RuntimeException("Access denied. Only admins can view all requests.")
+        }
+
+        val requests = if (statuses.isNullOrEmpty()) {
+            // If no statuses specified, return all active requests
+            requestService.getAllRequestsByStatuses(RequestStatus.values().toList())
+        } else {
+            requestService.getAllRequestsByStatuses(statuses)
+        }
+
+        return ResponseEntity.ok(requests.map { toResponseDTO(it) })
     }
 
     private fun extractEmployeeId(authHeader: String): UUID {

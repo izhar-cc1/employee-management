@@ -33,4 +33,8 @@ interface RequestRepository : JpaRepository<EmployeeRequest, Long> {
 
     @Query("SELECT r FROM EmployeeRequest r WHERE r.processedBy.id = :approverId AND r.active = true")
     fun findByProcessedBy(@Param("approverId") approverId: Long): List<EmployeeRequest>
+
+    // Method to find requests by multiple statuses
+    fun findByStatusInAndActiveTrue(statuses: List<RequestStatus>): List<EmployeeRequest>
+
 }
